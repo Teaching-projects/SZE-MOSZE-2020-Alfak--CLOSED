@@ -1,38 +1,41 @@
 
-#include <iostream>
 #include "character.h" 
 
-#include <string>
 //a characters osztály metódusai kifejtve, leírás az osztályban
 
-Characters::Characters(std::string name, int Hp, int Dpr) {
-	this->name = name;
-	this->Dpr = Dpr;
-	this->Hp = Hp;
+Characters::Characters(const std::string name,int Hp,const int Dpr) : name(name), Hp(Hp), Dpr(Dpr)
+{	
 }
 
-std::string Characters::Getname() {
+
+
+const std::string& Characters::Getname() {
 	return name;
 }
 
-int Characters::GetHp() {
+const int& Characters::GetHp() {
 	return Hp;
 }
 
-int  Characters::GetDpr() {
+const int&  Characters::GetDpr() {
 	return Dpr;
 }
 
-void Characters::SetHp(int NewHp) {
-	if (NewHp < 0) {
+void Characters::SetHp(Characters &X) {
+
+	
+	if (Hp - X.GetDpr() < 0) {
 		Hp = 0;
 	}
 	else {
-		Hp = NewHp;
+		Hp = Hp - X.GetDpr();
 	}
+	
 
 }
 
-void  Characters::toString() {
-	std::cout << "Name: " << Getname() << " HP: " << GetHp() << " DPR: " << GetDpr() << std::endl;
+ std::string Characters::toString() {
+	std::string s; 
+	s = "Name: " + Getname() + " Hp: " + std::to_string(GetHp()) + " SPR: " + std::to_string(GetDpr());
+	return s;
 }

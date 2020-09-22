@@ -1,22 +1,20 @@
-#include <iostream>
+
 #include "game.h"
-#include <string>
 
 //a Game osztály metódusai kifejtve, leírás az osztályban
 
-Game::Game(Characters A, Characters B) {
-	this->A = A;
-	this->B = B;
+Game::Game(const Characters& A, const Characters& B) : A(A), B(B)
+{
 }
 
-void Game::Fight() {
+void Game::Fight(Characters& A, Characters& B) {
 	//Elindúl a játék
 	std::cout << "Game start" << "\n" << std::endl;
 	//ez lesz a számoló
 	int i;
 	//Ki írja a kezdõ értékeit a karaktereknek
-	A.toString();
-	B.toString();
+	std::cout << A.toString() << "\n\n";
+	std::cout << B.toString() << "\n\n";
 	//Itt lehet választani melyik karakter legyen az elsõ aki támad, Feltételezzük, hogy jó bementet kapunk amúgy input ellenörzés kéne. Habár itt csak 2 érték van de az i egyben kör számoló is ami elég nagy lehet ezért int a típusa.
 	std::cout << "Choose starter. |0 is " << A.Getname() << "|  |1 is " << B.Getname() << "|" << std::endl;
 	std::cin >> i;
@@ -25,16 +23,16 @@ void Game::Fight() {
 	{
 		if (i % 2 == 0) {
 			std::cout << "Round: " << i + 1 << " " << A.Getname() << " -> " << B.Getname() << std::endl;
-			B.SetHp(B.GetHp() - A.GetDpr());
-			A.toString();
-			B.toString();
+			B.SetHp(A);
+			std::cout<<A.toString()<<"\n\n";
+			std::cout << B.toString() << "\n\n";
 			std::cout << "\n" << std::endl;
 		}
 		else {
 			std::cout << "Round: " << i + 1 << " " << B.Getname() << " -> " << A.Getname() << std::endl;
-			A.SetHp(A.GetHp() - B.GetDpr());
-			A.toString();
-			B.toString();
+			A.SetHp(B);
+			std::cout << A.toString() << "\n\n";
+			std::cout << B.toString() << "\n\n";
 			std::cout << "\n" << std::endl;
 		}
 
