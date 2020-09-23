@@ -3,25 +3,25 @@
 
 //a characters osztály metódusai kifejtve, leírás az osztályban
 
-Characters::Characters(const std::string name,int Hp,const int Dpr) : name(name), Hp(Hp), Dpr(Dpr)
+Character::Character(const std::string name,int Hp,const int Dpr) : name(name), Hp(Hp), Dpr(Dpr)
 {	
 }
 
 
 
-const std::string& Characters::Getname() {
+const std::string& Character::Getname(){
 	return name;
 }
 
-const int& Characters::GetHp() {
+const int& Character::GetHp(){
 	return Hp;
 }
 
-const int&  Characters::GetDpr() {
+const int&  Character::GetDpr() const{
 	return Dpr;
 }
 
-void Characters::SetHp(Characters &X) {
+void Character::Attackedby(const Character& X) {
 
 	
 	if (Hp - X.GetDpr() < 0) {
@@ -30,12 +30,14 @@ void Characters::SetHp(Characters &X) {
 	else {
 		Hp = Hp - X.GetDpr();
 	}
-	
+
 
 }
 
- std::string Characters::toString() {
+
+
+ std::string Character::toString() {
 	std::string s; 
-	s = "Name: " + Getname() + " Hp: " + std::to_string(GetHp()) + " SPR: " + std::to_string(GetDpr());
+	s = "Name: " + Getname() + " Hp: " + std::to_string(GetHp()) + " DPR: " + std::to_string(GetDpr());
 	return s;
 }
