@@ -25,7 +25,7 @@ public:
 	/*Egyik karakter megtámadja a másikat. Konstans karakter referenciát vár paraméterként*/
 	void Attackedby(const Character& X);
 	//Egyszerû tostring metótus ami egy stringet ad vissza a karakter paramétereivel, szebb lesz a kód.
-	const std::string toString();
+	std::string toString() const;
 
 //Privát adattagok
 private:

@@ -36,7 +36,7 @@ void Character::Attackedby(const Character& X) {
 
 
 
- const std::string Character::toString() {
+ std::string Character::toString() const{
 	std::string s; 
 	s = "Name: " + Getname() + " Hp: " + std::to_string(GetHp()) + " DPR: " + std::to_string(GetDpr());
 	return s;
