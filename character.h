@@ -14,10 +14,10 @@ public:
 	Character(const std::string name, int Hp,const int Dpr);
 	
 	//Vissza adja a karakter nevét
-	const std::string& Getname();
+	const std::string& Getname() const;
 
 	//Vissza adja a karakter életét
-	const int& GetHp();
+	const int& GetHp() const;
 
 	//Vissza adja a karakter ütés erõsségét a végére a const az Attackedby miatt kell, hogy meg lehessen hívni
 	const int& GetDpr() const;
@@ -25,7 +25,7 @@ public:
 	/*Egyik karakter megtámadja a másikat. Konstans karakter referenciát vár paraméterként*/
 	void Attackedby(const Character& X);
 	//Egyszerû tostring metótus ami egy stringet ad vissza a karakter paramétereivel, szebb lesz a kód.
-	std::string toString();
+	const std::string toString();
 
 //Privát adattagok
 private:
