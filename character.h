@@ -11,8 +11,8 @@ public:
 
 
 	//Paraméteres konstruktor Konstans Név(nem változik), élet, konstans ütés erõsség(nem változik)
-	Character(const std::string name, int Hp,const int Dpr);
-	
+	Character(const std::string name, int Hp, const int Dpr);
+
 	//Vissza adja a karakter nevét
 	const std::string& Getname() const;
 
@@ -27,7 +27,9 @@ public:
 	//Egyszerû tostring metótus ami egy stringet ad vissza a karakter paramétereivel, szebb lesz a kód.
 	std::string toString() const;
 
-//Privát adattagok
+	static Character parseUnit(std::string fajlnev);
+
+	//Privát adattagok
 private:
 	const std::string name; //A karakter neve
 	int Hp;  //A karakter élete
