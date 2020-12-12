@@ -8,8 +8,6 @@
 
 Mindenkivel jól lehetett együtt dolgozni, ha valamiben elakadtunk tudtuk egymást segíteni. Összeséggében mindenki jól kivette a részét a munkából. Sok esetben nem arányos az egyes tagok által végzett munka azzal, ami a GitHub History-ban látható, mivel gyakran konferenciabeszélgetésben dolgozutnk közösen a feladatokon, így ez elsőre megtévesztő lehet.
 
-Mivel a CLOSE után nem tudtunk hozzáférni a korábbi repository-hoz, így ezen az új repo-n folytattuk a munkát. Később észrevettük, hogy már tudnánk feltölteni a korábbira is, ám akkor már sokat vesztettünk volna vele, így itt fejeztük be a feladatot.
-
 # Videók
 
  - [Gameplay](/videos/gameplay.mp4)
