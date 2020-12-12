@@ -1,0 +1,21 @@
+name: Documentation
+
+on: push
+
+jobs:
+    deploy:
+        name: Deploy to GitHub Pages
+        runs-on: ubuntu-latest
+        container: kviktor58/mosze3:latest    
+        steps:
+         - uses: actions/checkout@v2
+         - run: make documentation
+
+         - name: Push git subdirectory as branch
+           uses: s0/git-publish-subdir-action@v2.4.0
+
+           env:
+            REPO: self
+            BRANCH: documentation
+            FOLDER: DOCS/html
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

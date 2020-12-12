@@ -1,42 +1,80 @@
+/**
+* \brief This is an RPG game simulation.
+*
+* \author Alfak
+*
+* Last time code was modified: 2020/12/10
+*
+* Created on: 2020/12/10 16:00
+*/
 
-
-#include "game.h" 
 #include <iostream>
-//Alfák megoldása
-//2020.09.23 javaslatok beépítve
+#include <map>
+#include <string>
+#include <filesystem>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <list>
 
-int main(int argc, char* argv[])
-{
-    
-    
-    //argumentum ellenörzés. Ha valaki megadja az összes argumentumot az indításnál akkor ezek száma 7(a program neve+2*3 paraméter: név,hp,dpr)
-    if (argc < 7) {
-        std::cout << "Please give all of the arguments when you start the programe It will work. Or change the comments in the programe if "
-        << "you are a pussycat, it works just as well. #the programmer " << "\n\n"; //ha valaki nem adná meg akkor a program nem hal meg.
-        return 1;                                  //vicces üzenet ami jelzi a hibát, ha kell a kommentek kiszedésével lehet más futást is indítani
-    }
+#include "JSON.h"
+#include "Hero.h"
+#include "Monster.h"
 
-    /*Ha megvan mind a 7 adat akkor létrejönnek a karakterek és fut a program ahogy kell, a atoi 
-    azért kell mert arz argv tömb alapvetõen karaktertömb és kell típus konvertálás a mûködéshez.*/
-    else {
-        Character A(argv[1], std::atoi(argv[2]), std::atoi(argv[3]));
-        Character B(argv[4], std::atoi(argv[5]), std::atoi(argv[6]));
-       
-        Game NewGame(A, B);       /*A játék osztály példánya "elindít" egy új játékot A és B karakterrel. 
-                                    A karakterek sorrendje nem fontos mert az alap feladatot kiegészítettük azzal, 
-                                    hogy a futásnál választani lehet hogy melyik karakter kezdje az ütést.*/
+const std::map<int, std::string> error_messages = {
+    { 1 , "Bad number of arguments. Only a single scenario file should be provided." },
+    { 2 , "The provided scenario file is not accessible." },
+    { 3 , "The provided scenario file is invalid." },
+    { 4 , "JSON parsing error." }
+};
 
-       NewGame.Fight();    //Elindítja a játék Fight metódusát( A és B karakter felvátolt ütése)
-    }
-
-
-
-    
-   
-    
-    
-    return 0;
+void bad_exit(int exitcode) {
+    std::cerr
+        << (error_messages.count(exitcode) ? error_messages.at(exitcode) : "Unknown error")
+        << std::endl;
+    exit(exitcode);
 }
 
+int main(int argc, char** argv) {
+    if (argc != 2) bad_exit(1);
+    if (!std::filesystem::exists(argv[1])) bad_exit(2);
 
+    std::string hero_file;
+    std::list<std::string> monster_files;
+    try {
+        JSON scenario = JSON::parseFromFile(argv[1]);
+        if (!(scenario.count("hero") && scenario.count("monsters"))) bad_exit(3);
+        else {
+            hero_file = scenario.get<std::string>("hero");
+            JSON::list monster_file_list = scenario.get<JSON::list>("monsters");
+            for (auto monster_file : monster_file_list)
+                monster_files.push_back(std::get<std::string>(monster_file));
+        }
+    }
+    catch (const JSON::ParseException& e) { bad_exit(4); }
 
+    try {
+        Hero hero{ Hero::parse(hero_file) };
+        std::list<Monster> monsters;
+        for (const auto& monster_file : monster_files)
+            monsters.push_back(Monster::parse(monster_file));
+
+        while (hero.isAlive() && !monsters.empty()) {
+            std::cout
+                << hero.getName() << "(" << hero.getLevel() << ")"
+                << " vs "
+                << monsters.front().getName()
+                << std::endl;
+            hero.fightTilDeath(monsters.front());
+            if (!monsters.front().isAlive()) monsters.pop_front();
+        }
+        std::cout << (hero.isAlive() ? "The hero won." : "The hero died.") << std::endl;
+        std::cout << hero.getName() << ": LVL" << hero.getLevel() << std::endl
+            << "   HP: " << hero.getHp() << "/" << hero.getMaxHp() << std::endl
+            << "  DMG: " << hero.getDmg() << std::endl
+            << "  ACD: " << hero.getAttackCoolDown() << std::endl
+            ;
+    }
+    catch (const JSON::ParseException& e) { bad_exit(4); }
+    return 0;
+}
